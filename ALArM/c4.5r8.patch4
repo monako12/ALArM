@@ -1,0 +1,877 @@
+Only in R8.new/Data: golf.tree
+Only in R8.new/Data: golf.unpruned
+Only in R8.new/Src: Sample.tar.gz
+Only in R8.new/Src: average
+diff -cr R8/Src/average.c R8.new/Src/average.c
+*** R8/Src/average.c	1999-07-19 19:48:59.000000000 +0900
+--- R8.new/Src/average.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 48,54 ****
+  
+  	if ( Lines )
+  	{
+! 	    if ( i != Numbers ) exit();
+  	}
+  	else
+  	{
+--- 48,54 ----
+  
+  	if ( Lines )
+  	{
+! 	    if ( i != Numbers ) exit(0);
+  	}
+  	else
+  	{
+diff -cr R8/Src/besttree.c R8.new/Src/besttree.c
+*** R8/Src/besttree.c	1999-07-19 19:48:59.000000000 +0900
+--- R8.new/Src/besttree.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 188,194 ****
+  	ClassesLeft--;
+      }
+  
+!     cfree(ClassFreq);
+  }
+  
+  
+--- 188,194 ----
+  	ClassesLeft--;
+      }
+  
+!     free(ClassFreq);
+  }
+  
+  
+Only in R8.new/Src: besttree.o
+Only in R8.new/Src: build.o
+Only in R8.new/Src: c4.5
+Only in R8.new/Src: c4.5.o
+Only in R8.new/Src: c4.5rules
+Only in R8.new/Src: c4.5rules.o
+diff -cr R8/Src/classify.c R8.new/Src/classify.c
+*** R8/Src/classify.c	1999-07-19 19:48:59.000000000 +0900
+--- R8.new/Src/classify.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 61,67 ****
+  /*************************************************************************/
+  
+  
+!     Classify(CaseDesc, T, Weight)
+  /*  --------  */
+      Description CaseDesc; 
+      Tree T;
+--- 61,67 ----
+  /*************************************************************************/
+  
+  
+! int Classify(CaseDesc, T, Weight)
+  /*  --------  */
+      Description CaseDesc; 
+      Tree T;
+***************
+*** 93,99 ****
+  		ClassSum[T->Leaf] += Weight;
+  	    }
+  
+! 	    return;
+  
+  	case BrDiscr:  /* test of discrete attribute */
+  
+--- 93,99 ----
+  		ClassSum[T->Leaf] += Weight;
+  	    }
+  
+! 	    return 0;
+  
+  	case BrDiscr:  /* test of discrete attribute */
+  
+***************
+*** 113,119 ****
+  		}
+  	    }
+  
+! 	    return;
+  
+  	case ThreshContin:  /* test of continuous attribute */
+  
+--- 113,119 ----
+  		}
+  	    }
+  
+! 	    return 0;
+  
+  	case ThreshContin:  /* test of continuous attribute */
+  
+***************
+*** 134,140 ****
+  		Classify(CaseDesc, T->Branch[v], Weight);
+  	    }
+  
+! 	    return;
+  
+  	case BrSubset:  /* subset test on discrete attribute  */
+  
+--- 134,140 ----
+  		Classify(CaseDesc, T->Branch[v], Weight);
+  	    }
+  
+! 	    return 0;
+  
+  	case BrSubset:  /* subset test on discrete attribute  */
+  
+***************
+*** 149,155 ****
+  		    {
+  			Classify(CaseDesc, T->Branch[v], Weight);
+  
+! 			return;
+  		    }
+  		}
+  	    }
+--- 149,155 ----
+  		    {
+  			Classify(CaseDesc, T->Branch[v], Weight);
+  
+! 			return 0;
+  		    }
+  		}
+  	    }
+***************
+*** 162,167 ****
+  		         (Weight * T->Branch[v]->Items) / T->Items);
+  	    }
+  
+! 	    return;
+      } 
+  }
+--- 162,167 ----
+  		         (Weight * T->Branch[v]->Items) / T->Items);
+  	    }
+  
+! 	    return 0;
+      } 
+  }
+Only in R8.new/Src: classify.o
+diff -cr R8/Src/confmat.c R8.new/Src/confmat.c
+*** R8/Src/confmat.c	1996-06-22 11:30:55.000000000 +0900
+--- R8.new/Src/confmat.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 10,16 ****
+  #include "extern.i"
+  
+  
+!     PrintConfusionMatrix(ConfusionMat)
+  /*  --------------------  */
+      ItemNo *ConfusionMat;
+  {
+--- 10,16 ----
+  #include "extern.i"
+  
+  
+! void PrintConfusionMatrix(ConfusionMat)
+  /*  --------------------  */
+      ItemNo *ConfusionMat;
+  {
+Only in R8.new/Src: confmat.o
+Only in R8.new/Src: consult
+diff -cr R8/Src/consult.c R8.new/Src/consult.c
+*** R8/Src/consult.c	1995-10-10 10:19:51.000000000 +0900
+--- R8.new/Src/consult.c	2012-11-14 19:34:21.000000000 +0900
+***************
+*** 71,77 ****
+  /*************************************************************************/
+  
+  
+!     ClassifyCase(Subtree, Weight)
+  /*  ------------ 	 */
+      Tree Subtree;
+      float Weight;
+--- 71,77 ----
+  /*************************************************************************/
+  
+  
+! void ClassifyCase(Subtree, Weight)
+  /*  ------------ 	 */
+      Tree Subtree;
+      float Weight;
+***************
+*** 286,292 ****
+  /*************************************************************************/
+  
+  
+!     InterpretTree()
+  /*  ------------- 	 */
+  { 
+      ClassNo c, BestClass;
+--- 286,292 ----
+  /*************************************************************************/
+  
+  
+! void InterpretTree()
+  /*  ------------- 	 */
+  { 
+      ClassNo c, BestClass;
+Only in R8.new/Src: consult.c~
+Only in R8.new/Src: consult.o
+Only in R8.new/Src: consultr
+diff -cr R8/Src/consultr.c R8.new/Src/consultr.c
+*** R8/Src/consultr.c	1995-10-10 10:19:51.000000000 +0900
+--- R8.new/Src/consultr.c	2012-11-14 19:37:53.000000000 +0900
+***************
+*** 206,212 ****
+  /*************************************************************************/
+  
+  
+!     InterpretRuleset()
+  /*  ---------------- 	 */
+  { 
+      char Reply;
+--- 206,212 ----
+  /*************************************************************************/
+  
+  
+! void InterpretRuleset()
+  /*  ---------------- 	 */
+  { 
+      char Reply;
+Only in R8.new/Src: consultr.c~
+Only in R8.new/Src: consultr.o
+diff -cr R8/Src/contin.c R8.new/Src/contin.c
+*** R8/Src/contin.c	1995-10-12 11:26:33.000000000 +0900
+--- R8.new/Src/contin.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 25,31 ****
+  /*************************************************************************/
+  
+  
+!     EvalContinuousAtt(Att, Fp, Lp)
+  /*  -----------------  */ 
+      Attribute Att;
+      ItemNo Fp, Lp; 
+--- 25,31 ----
+  /*************************************************************************/
+  
+  
+! void EvalContinuousAtt(Att, Fp, Lp)
+  /*  -----------------  */ 
+      Attribute Att;
+      ItemNo Fp, Lp; 
+Only in R8.new/Src: contin.o
+diff -cr R8/Src/discr.c R8.new/Src/discr.c
+*** R8/Src/discr.c	1999-07-19 19:48:59.000000000 +0900
+--- R8.new/Src/discr.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 16,22 ****
+  /*************************************************************************/
+  
+  
+!     EvalDiscreteAtt(Att, Fp, Lp, Items)
+  /*  ---------------  */ 
+      Attribute Att;
+      ItemNo Fp, Lp; 
+--- 16,22 ----
+  /*************************************************************************/
+  
+  
+! void EvalDiscreteAtt(Att, Fp, Lp, Items)
+  /*  ---------------  */ 
+      Attribute Att;
+      ItemNo Fp, Lp; 
+Only in R8.new/Src: discr.o
+Only in R8.new/Src: genlogs.o
+Only in R8.new/Src: genrules.o
+Only in R8.new/Src: getdata.o
+Only in R8.new/Src: getnames.o
+Only in R8.new/Src: getopt.o
+Only in R8.new/Src: header.o
+Only in R8.new/Src: info.o
+diff -cr R8/Src/makerules.c R8.new/Src/makerules.c
+*** R8/Src/makerules.c	1996-06-22 11:33:49.000000000 +0900
+--- R8.new/Src/makerules.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 83,103 ****
+  
+      ForEach(i, 0, MaxDepth+1)
+      {
+! 	cfree(CondSatisfiedBy[i]);
+! 	cfree(Stack[i]);
+      }
+!     cfree(Deleted);
+!     cfree(CondSatisfiedBy);
+!     cfree(Stack);
+! 
+!     cfree(Actual);
+!     cfree(Total);
+!     cfree(Errors);
+!     cfree(Pessimistic);
+  
+!     cfree(CondSigLevel);
+  
+!     cfree(TargetClassFreq);
+  }
+  
+  
+--- 83,103 ----
+  
+      ForEach(i, 0, MaxDepth+1)
+      {
+! 	free(CondSatisfiedBy[i]);
+! 	free(Stack[i]);
+      }
+!     free(Deleted);
+!     free(CondSatisfiedBy);
+!     free(Stack);
+! 
+!     free(Actual);
+!     free(Total);
+!     free(Errors);
+!     free(Pessimistic);
+  
+!     free(CondSigLevel);
+  
+!     free(TargetClassFreq);
+  }
+  
+  
+***************
+*** 194,199 ****
+  
+  	PruneRule(Term, d, t->Leaf);
+  
+! 	cfree(Term);
+      }
+  }
+--- 194,199 ----
+  
+  	PruneRule(Term, d, t->Leaf);
+  
+! 	free(Term);
+      }
+  }
+Only in R8.new/Src: makerules.o
+Only in R8.new/Src: prune.o
+diff -cr R8/Src/prunerule.c R8.new/Src/prunerule.c
+*** R8/Src/prunerule.c	1996-06-22 11:33:49.000000000 +0900
+--- R8.new/Src/prunerule.c	2012-11-14 19:30:52.000000000 +0900
+***************
+*** 42,48 ****
+  /*************************************************************************/
+  
+  
+!     PruneRule(Cond, NCond, TargetClass)
+  /*  ---------  */
+      Condition Cond[];
+      short NCond;
+--- 42,48 ----
+  /*************************************************************************/
+  
+  
+! void PruneRule(Cond, NCond, TargetClass)
+  /*  ---------  */
+      Condition Cond[];
+      short NCond;
+Only in R8.new/Src: prunerule.c~
+Only in R8.new/Src: prunerule.o
+diff -cr R8/Src/rules.c R8.new/Src/rules.c
+*** R8/Src/rules.c	1996-02-29 15:30:09.000000000 +0900
+--- R8.new/Src/rules.c	2012-11-14 19:29:29.000000000 +0900
+***************
+*** 133,139 ****
+  	StreamIn((char *) &c, sizeof(ClassNo));
+  	StreamIn((char *) &e, sizeof(float));
+  	NewRule(Cond, n, c, e);
+! 	cfree(Cond);
+      }
+  
+      RecoverDiscreteNames();
+--- 133,139 ----
+  	StreamIn((char *) &c, sizeof(ClassNo));
+  	StreamIn((char *) &e, sizeof(float));
+  	NewRule(Cond, n, c, e);
+! 	free(Cond);
+      }
+  
+      RecoverDiscreteNames();
+***************
+*** 160,166 ****
+      {
+  	if ( SameTest(Newtest, TestVec[i]) )
+  	{
+! 	    cfree(Newtest);
+  	    return TestVec[i];
+  	}
+      }
+--- 160,166 ----
+      {
+  	if ( SameTest(Newtest, TestVec[i]) )
+  	{
+! 	    free(Newtest);
+  	    return TestVec[i];
+  	}
+      }
+***************
+*** 430,436 ****
+  /*************************************************************************/
+  
+  
+!     PrintCondition(c)
+  /*  --------------  */
+      Condition c;
+  {
+--- 430,436 ----
+  /*************************************************************************/
+  
+  
+! int PrintCondition(c)
+  /*  --------------  */
+      Condition c;
+  {
+***************
+*** 448,454 ****
+      if ( v < 0 )
+      {
+  	printf(" is unknown\n");
+! 	return;
+      }
+  
+      switch ( tp->NodeType )
+--- 448,454 ----
+      if ( v < 0 )
+      {
+  	printf(" is unknown\n");
+! 	return 1;
+      }
+  
+      switch ( tp->NodeType )
+Only in R8.new/Src: rules.c~
+Only in R8.new/Src: rules.o
+diff -cr R8/Src/siftrules.c R8.new/Src/siftrules.c
+*** R8/Src/siftrules.c	1996-06-22 11:33:49.000000000 +0900
+--- R8.new/Src/siftrules.c	2012-11-14 19:32:06.000000000 +0900
+***************
+*** 93,110 ****
+  
+      /*  Clear  */
+  
+!     cfree(Value);
+!     cfree(RuleIn);
+!     cfree(ClassRules);
+!     cfree(Subset);
+!     cfree(Covered);
+!     cfree(FalsePos);
+!     cfree(NoRule);
+      ForEach(r, 1, OldNRules)
+      {
+! 	cfree(Match[r]);
+      }
+!     cfree(Match);
+  }
+  
+  
+--- 93,110 ----
+  
+      /*  Clear  */
+  
+!     free(Value);
+!     free(RuleIn);
+!     free(ClassRules);
+!     free(Subset);
+!     free(Covered);
+!     free(FalsePos);
+!     free(NoRule);
+      ForEach(r, 1, OldNRules)
+      {
+! 	free(Match[r]);
+      }
+!     free(Match);
+  }
+  
+  
+***************
+*** 161,167 ****
+  /*************************************************************************/
+  
+  
+!     CoverClass()
+  /*  ----------  */
+  {
+      RuleNo r, RuleCount=0;
+--- 161,167 ----
+  /*************************************************************************/
+  
+  
+! int CoverClass()
+  /*  ----------  */
+  {
+      RuleNo r, RuleCount=0;
+***************
+*** 187,193 ****
+  
+      if ( ! RuleCount )
+      {
+! 	return;
+      }
+  
+      SubsetValue = 1E10;
+--- 187,193 ----
+  
+      if ( ! RuleCount )
+      {
+! 	return 0;
+      }
+  
+      SubsetValue = 1E10;
+***************
+*** 724,730 ****
+      }
+  
+      NRules = NewNRules;
+!     cfree(Included);
+  }
+  
+  
+--- 724,730 ----
+      }
+  
+      NRules = NewNRules;
+!     free(Included);
+  }
+  
+  
+Only in R8.new/Src: siftrules.c~
+Only in R8.new/Src: siftrules.o
+Only in R8.new/Src: sort.o
+diff -cr R8/Src/st-thresh.c R8.new/Src/st-thresh.c
+*** R8/Src/st-thresh.c	1999-07-19 19:48:59.000000000 +0900
+--- R8.new/Src/st-thresh.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 21,27 ****
+  
+  #define	Below(v,t)	(v <= t + 1E-6)
+  
+- 
+  /*************************************************************************/
+  /*									 */
+  /*  Soften all thresholds for continuous attributes in tree T		 */
+--- 21,26 ----
+***************
+*** 42,51 ****
+  
+      ScanTree(T, 0, MaxItem);
+  
+!     cfree(ThreshErrs);
+!     cfree(RHSErr);
+!     cfree(LHSErr);
+!     cfree(CVals);
+  }
+  
+  
+--- 41,50 ----
+  
+      ScanTree(T, 0, MaxItem);
+  
+!     free(ThreshErrs);
+!     free(RHSErr);
+!     free(LHSErr);
+!     free(CVals);
+  }
+  
+  
+***************
+*** 58,64 ****
+  /*************************************************************************/
+  
+  
+!     ScanTree(T, Fp, Lp)
+  /*  --------  */
+      Tree T;
+      ItemNo Fp, Lp;
+--- 57,63 ----
+  /*************************************************************************/
+  
+  
+! int ScanTree(T, Fp, Lp)
+  /*  --------  */
+      Tree T;
+      ItemNo Fp, Lp;
+***************
+*** 74,80 ****
+  
+      /*  Stop when get to a leaf  */
+  
+!     if ( ! T->NodeType ) return;
+  
+      /*  Group the unknowns together  */
+  
+--- 73,79 ----
+  
+      /*  Stop when get to a leaf  */
+  
+!     if ( ! T->NodeType ) return 0;
+  
+      /*  Group the unknowns together  */
+  
+Only in R8.new/Src: st-thresh.o
+Only in R8.new/Src: stats.o
+diff -cr R8/Src/subset.c R8.new/Src/subset.c
+*** R8/Src/subset.c	1995-10-10 10:19:53.000000000 +0900
+--- R8.new/Src/subset.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 30,36 ****
+  /*************************************************************************/
+  
+  
+!     EvalSubset(Att, Fp, Lp, Items)
+  /*  ----------  */ 
+      Attribute Att;
+      ItemNo Fp, Lp; 
+--- 30,36 ----
+  /*************************************************************************/
+  
+  
+! void EvalSubset(Att, Fp, Lp, Items)
+  /*  ----------  */ 
+      Attribute Att;
+      ItemNo Fp, Lp; 
+Only in R8.new/Src: subset.o
+diff -cr R8/Src/testrules.c R8.new/Src/testrules.c
+*** R8/Src/testrules.c	1995-10-10 10:19:53.000000000 +0900
+--- R8.new/Src/testrules.c	2012-11-14 19:32:28.000000000 +0900
+***************
+*** 20,26 ****
+  /*************************************************************************/
+  
+  
+!     EvaluateRulesets(DeleteRules)
+  /*  ----------------  */
+      Boolean DeleteRules;
+  {
+--- 20,26 ----
+  /*************************************************************************/
+  
+  
+! void EvaluateRulesets(DeleteRules)
+  /*  ----------------  */
+      Boolean DeleteRules;
+  {
+***************
+*** 249,256 ****
+  	}
+      }
+  
+!     cfree(Better);
+!     cfree(Worse);
+  
+      if ( riDrop )
+      {
+--- 249,256 ----
+  	}
+      }
+  
+!     free(Better);
+!     free(Worse);
+  
+      if ( riDrop )
+      {
+Only in R8.new/Src: testrules.c~
+Only in R8.new/Src: testrules.o
+diff -cr R8/Src/trees.c R8.new/Src/trees.c
+*** R8/Src/trees.c	1995-10-10 10:19:53.000000000 +0900
+--- R8.new/Src/trees.c	2012-11-14 19:28:07.000000000 +0900
+***************
+*** 129,135 ****
+  /*************************************************************************/
+  
+  
+!     ShowBranch(Sh, T, v)
+  /*  -----------  */
+      short Sh;
+      Tree T;
+--- 129,135 ----
+  /*************************************************************************/
+  
+  
+! int ShowBranch(Sh, T, v)
+  /*  -----------  */
+      short Sh;
+      Tree T;
+***************
+*** 178,184 ****
+  		    Values++;
+  		}
+  	    }
+! 	    if ( ! Values ) return;
+  
+  	    Indent(Sh, Tab);
+  
+--- 178,184 ----
+  		    Values++;
+  		}
+  	    }
+! 	    if ( ! Values ) return 0;
+  
+  	    Indent(Sh, Tab);
+  
+***************
+*** 511,527 ****
+  	    ReleaseTree(Node->Branch[v]);
+  	}
+  
+! 	cfree(Node->Branch);
+  
+  	if ( Node->NodeType == BrSubset )
+  	{
+! 	    cfree(Node->Subset);
+  	}
+  
+      }
+  
+!     cfree(Node->ClassDist);
+!     cfree(Node);
+  }
+  
+  
+--- 511,527 ----
+  	    ReleaseTree(Node->Branch[v]);
+  	}
+  
+! 	free(Node->Branch);
+  
+  	if ( Node->NodeType == BrSubset )
+  	{
+! 	    free(Node->Subset);
+  	}
+  
+      }
+  
+!     free(Node->ClassDist);
+!     free(Node);
+  }
+  
+  
+Only in R8.new/Src: trees.o
+diff -cr R8/Src/userint.c R8.new/Src/userint.c
+*** R8/Src/userint.c	1999-07-19 19:48:59.000000000 +0900
+--- R8.new/Src/userint.c	2012-11-14 19:36:57.000000000 +0900
+***************
+*** 31,37 ****
+  /*************************************************************************/
+  
+  
+!     CheckValue(Att, T)
+  /*  ----------  */
+      Attribute Att;
+      Tree T;
+--- 31,37 ----
+  /*************************************************************************/
+  
+  
+! void CheckValue(Att, T)
+  /*  ----------  */
+      Attribute Att;
+      Tree T;
+***************
+*** 110,116 ****
+  /*************************************************************************/
+  
+  
+!     ReadRange(Att, T)
+  /*  ----------  */
+      Attribute Att;
+      Tree T;
+--- 110,116 ----
+  /*************************************************************************/
+  
+  
+! int ReadRange(Att, T)
+  /*  ----------  */
+      Attribute Att;
+      Tree T;
+***************
+*** 123,129 ****
+  
+      if ( c == '\n' )
+      {
+! 	return;
+      }
+      if ( c == '?' )
+      {
+--- 123,129 ----
+  
+      if ( c == '\n' )
+      {
+! 	return 0;
+      }
+      if ( c == '?' )
+      {
+***************
+*** 139,145 ****
+  	    RangeDesc[Att].Known = false;
+  	    SkipLine(c);
+  	}
+! 	return;
+      }
+  
+      ungetc(c, stdin);
+--- 139,145 ----
+  	    RangeDesc[Att].Known = false;
+  	    SkipLine(c);
+  	}
+! 	return 0;
+      }
+  
+      ungetc(c, stdin);
+***************
+*** 163,169 ****
+  /*									 */
+  /*************************************************************************/
+  
+!     ReadDiscr(Att, T)
+  /*  ---------  */
+      Attribute Att;
+      Tree T;
+--- 163,169 ----
+  /*									 */
+  /*************************************************************************/
+  
+! int ReadDiscr(Att, T)
+  /*  ---------  */
+      Attribute Att;
+      Tree T;
+***************
+*** 194,200 ****
+  
+  	    SkipLine(Delimiter);
+  	    Retry(Att, T);
+! 	    return;
+  	}
+  
+  	if ( Delimiter == ':' )
+--- 194,200 ----
+  
+  	    SkipLine(Delimiter);
+  	    Retry(Att, T);
+! 	    return 0;
+  	}
+  
+  	if ( Delimiter == ':' )
+***************
+*** 229,235 ****
+  	printf("Probability values must sum to 1\n");
+  	SkipLine(Delimiter);
+  	Retry(Att, T);
+! 	return;
+      }
+  
+      /*  Distribute the remaining probability equally among
+--- 229,235 ----
+  	printf("Probability values must sum to 1\n");
+  	SkipLine(Delimiter);
+  	Retry(Att, T);
+! 	return 0;
+      }
+  
+      /*  Distribute the remaining probability equally among
+Only in R8.new/Src: userint.c~
+Only in R8.new/Src: userint.o
+Only in R8.new/Src: xval-prep
